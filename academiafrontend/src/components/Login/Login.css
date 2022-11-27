@@ -1,0 +1,13 @@
+.welcome-text {
+    text-align: center;
+}
+.button-center {
+    text-align: center;
+}
+.login-card {
+    width: 50%;
+    margin : auto;    
+}
+.login-card > .card {
+    box-shadow: gainsboro 0px 0px 10px 10px;
+}
