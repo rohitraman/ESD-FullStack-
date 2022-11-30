@@ -14,7 +14,7 @@ import java.util.*;
 
 public class SalaryDisbursementDAOImpl implements SalaryDisbursementDAO {
     @Override
-    public Response updateSalaryStatus(List<Integer> idList) {
+    public Response updateSalaryStatus(Integer id, List<Integer> idList) {
         try (Session session = HibernateUtil.getSession()) {
             String hql = "FROM EmployeeSalary sd where sd.employee.employeeID in :idList";
             Query query = session.createQuery(hql, EmployeeSalary.class);
@@ -26,7 +26,7 @@ public class SalaryDisbursementDAOImpl implements SalaryDisbursementDAO {
                 session.persist(salaryDisbursement);
                 transaction.commit();
             }
-            return getAllEmployeesForSalary();
+            return getAllEmployeesForSalary(id);
         } catch (HibernateException e) {
             e.printStackTrace();
         }
@@ -48,7 +48,7 @@ public class SalaryDisbursementDAOImpl implements SalaryDisbursementDAO {
     }
 
     @Override
-    public Response getAllEmployeesForSalary() {
+    public Response getAllEmployeesForSalary(Integer id) {
         try(Session session = HibernateUtil.getSession()) {
             String hql = "FROM EmployeeSalary es where es.paymentDate is NULL";
             Query query = session.createQuery(hql, EmployeeSalary.class);
@@ -59,6 +59,9 @@ public class SalaryDisbursementDAOImpl implements SalaryDisbursementDAO {
             List<EmployeeSalaryResponse> employeeSalaryResponseSet = new ArrayList<>();
             for (EmployeeSalary es : employeeSalaryList) {
                 Integer empID = es.getEmployee().getEmployeeID();
+                if (id != null && empID.equals(id)) {
+                    continue;
+                }
                 hql = "FROM EmployeeSalary es where es.employee.employeeID = " + empID;
                 query = session.createQuery(hql, EmployeeSalary.class);
                 List<EmployeeSalary> employeeSalariesByID = query.getResultList();

@@ -49,7 +49,7 @@ public class ModifySalaryDAOImpl implements ModifySalaryDAO {
         return new Response(null, 400);
     }
     @Override
-    public Response getAllEmployeesForSalary() {
+    public Response getAllEmployeesForSalary(Integer id) {
         try(Session session = HibernateUtil.getSession()) {
             String hql = "FROM EmployeeSalary es";
             Query query = session.createQuery(hql, EmployeeSalary.class);
@@ -60,6 +60,9 @@ public class ModifySalaryDAOImpl implements ModifySalaryDAO {
             List<EmployeeSalaryResponse> employeeSalaryResponseSet = new ArrayList<>();
             for (EmployeeSalary es : employeeSalaryList) {
                 Integer empID = es.getEmployee().getEmployeeID();
+                if (id != null && empID.equals(id)) {
+                    continue;
+                }
                 hql = "FROM EmployeeSalary es where es.employee.employeeID = " + empID;
                 query = session.createQuery(hql, EmployeeSalary.class);
                 List<EmployeeSalary> employeeSalariesByID = query.getResultList();

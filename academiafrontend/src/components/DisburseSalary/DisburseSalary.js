@@ -22,7 +22,7 @@ function DisburseSalary() {
         }
     }
     const disburseSalary = () => {
-        fetch("http://localhost:8080/salary/put", {
+        fetch(`http://localhost:8080/salary/put/${JSON.parse(loggedInuser).employeeID}`, {
             method: 'PUT',
             body: JSON.stringify({
                 "idList" : empIDs
@@ -66,7 +66,7 @@ function DisburseSalary() {
         }
     });
     useEffect(() => {
-        fetch("http://localhost:8080/salary/getall", {
+        fetch(`http://localhost:8080/salary/getall/${JSON.parse(loggedInuser).employeeID}`, {
             method: 'GET'
         }).then(response => response.json())
         .then((data) => {
@@ -78,9 +78,9 @@ function DisburseSalary() {
             setError(true)
             setSpinner(false)
         })
-    }, []);
+    }, [loggedInuser]);
     
-    const salaryCard = employees.filter((value) => value.employeeID !== JSON.parse(loggedInuser).employeeID).map((value, index) => {
+    const salaryCard = employees.map((value, index) => {
             return <SalaryCard key={value.salaryID} user={value} checkedEmpIDs = {(id, isChecked) => checkedEmpIDs(id, isChecked)}/>        
     });
     if (salaryCard.length === 0) {

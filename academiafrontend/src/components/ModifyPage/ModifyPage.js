@@ -17,7 +17,7 @@ function ModifyPage() {
         }
     })
     useEffect(() => {
-        fetch("http://localhost:8080/modify/getall", {
+        fetch(`http://localhost:8080/modify/getall/${JSON.parse(loggedInuser).employeeID}`, {
             method: 'GET'
         }).then(response => response.json())
         .then((data) => {
@@ -29,8 +29,8 @@ function ModifyPage() {
             setError(true)
             setSpinner(false)
         })
-    }, []);
-    const salaryCard = employees.filter((value) => value.employeeID !== JSON.parse(loggedInuser).employeeID).map((value) => {
+    }, [loggedInuser]);
+    const salaryCard = employees.map((value) => {
         return <SalaryCard key={value.salaryID} user={value}/>        
     });
     if (salaryCard.length === 0) {

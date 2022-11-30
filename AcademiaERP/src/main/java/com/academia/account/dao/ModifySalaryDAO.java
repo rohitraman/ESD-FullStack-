@@ -4,6 +4,6 @@ import com.academia.account.bean.Response;
 
 public interface ModifySalaryDAO {
     Response updateSalary(Integer employeeID, Object obj);
-    Response getAllEmployeesForSalary();
+    Response getAllEmployeesForSalary(Integer id);
 
 }

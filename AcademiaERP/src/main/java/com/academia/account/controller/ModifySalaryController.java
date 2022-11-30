@@ -16,10 +16,10 @@ public class ModifySalaryController {
     }
 
     @GET
-    @Path("/getall")
+    @Path("/getall/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllEmployeesForSalary() {
-        return new ModifySalaryDAOImpl().getAllEmployeesForSalary();
+    public Response getAllEmployeesForSalary(@PathParam("id") Integer id) {
+        return new ModifySalaryDAOImpl().getAllEmployeesForSalary(id);
     }
 
 }

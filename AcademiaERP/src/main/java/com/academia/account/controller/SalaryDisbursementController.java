@@ -10,19 +10,19 @@ import jakarta.ws.rs.core.MediaType;
 @Path("salary")
 public class SalaryDisbursementController {
     @PUT
-    @Path("/put")
+    @Path("/put/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getList(SalaryDisbursementRequest employeeIDRequest) {
+    public Response getList(@PathParam("id") Integer id, SalaryDisbursementRequest employeeIDRequest) {
         SalaryDisbursementDAOImpl salaryDisbursementDAO = new SalaryDisbursementDAOImpl();
-        return salaryDisbursementDAO.updateSalaryStatus(employeeIDRequest.getIdList());
+        return salaryDisbursementDAO.updateSalaryStatus(id, employeeIDRequest.getIdList());
     }
 
     @GET
-    @Path("/getall")
+    @Path("/getall/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllEmployeesForSalary() {
-        return new SalaryDisbursementDAOImpl().getAllEmployeesForSalary();
+    public Response getAllEmployeesForSalary(@PathParam("id") Integer id) {
+        return new SalaryDisbursementDAOImpl().getAllEmployeesForSalary(id);
     }
 
     @GET
