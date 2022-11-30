@@ -1,6 +1,13 @@
 .header-text {
     text-align: center;
+    font-size: 20px;
 }
 .form-align {
     justify-content: space-around;
+}
+.button-success-style {
+    text-align: center;
+}
+.form-group {
+    margin-left: 2%;
 }

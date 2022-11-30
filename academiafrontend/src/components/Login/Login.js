@@ -15,14 +15,46 @@ function Login(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
+    const [invalidEmail, setInvalidEmail] = useState(false);
+    const [invalidPassword, setInvalidPassword] = useState(false);
+    const [pageLoad, setPageLoad] = useState(true);
     const changeEvent = (event, isEmail) => {
-        if (isEmail)
-            setEmail(event.target.value);
-        else {
-            setPassword(event.target.value)
+        const emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+        if (isEmail) {
+            if (emailRegex.test(event.target.value)) {
+                setEmail(event.target.value);
+                setInvalidEmail(false);
+            } else {
+                setInvalidEmail(true);
+            }
+        } else {
+            if (event.target.value.length > 0) {
+                setInvalidPassword(false);
+                setPassword(event.target.value)
+            }
+            else {
+                setInvalidPassword(true);
+            }
         }
+        setPageLoad(false);
     }
-    const checkLogin = (email, password) => {
+    const checkLogin = (event, email, password) => {
+        if (email.length === 0 && password.length === 0) {
+            setInvalidPassword(true);
+            setInvalidEmail(true);
+            return;
+        }
+        if (email.length === 0) {
+            setInvalidEmail(true);
+            return;
+        }
+        if (password.length === 0) {
+            setInvalidPassword(true);
+            return;
+        }
+        if (invalidEmail || invalidPassword) {
+            return;
+        }
         fetch("http://localhost:8080/login", 
            {
                body : JSON.stringify({
@@ -49,27 +81,33 @@ function Login(props) {
 
     return (
         <>
+        <NavBar />
         <div className="container">
-            <NavBar />
             <div className="mt-5 login-card">
                 <Card>
-                    <Form className="m-5">
+                    <Form className="m-5" validated={!pageLoad && (!invalidEmail && !invalidPassword)}>
+                        <p>{!pageLoad && (!invalidEmail || !invalidPassword)}</p>
                         <p className="welcome-text">Welcome to Academic Accounts Page. Please enter credentials to login!</p>
                         {error && <Alert variant="danger">Invalid Credentials </Alert>}
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Email Address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" onChange={(event) => changeEvent(event, true)}/>
+                            <Form.Control type="email" placeholder="Enter email" onChange={(event) => changeEvent(event, true)} isInvalid={invalidEmail} required={!pageLoad}/>
+                            <Form.Control.Feedback type="invalid">
+                                Invalid Email ID
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Enter password" onChange={(event) => changeEvent(event, false)}/>
+                            <Form.Control type="password" placeholder="Enter password" onChange={(event) => changeEvent(event, false)} isInvalid={invalidPassword} required={!pageLoad}/>
+                            <Form.Control.Feedback type="invalid">
+                                Empty Input for Password
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <div className="button-center">
-                            <Button variant="primary" type="button" size="lg" onClick={(event) => checkLogin(email, password)}>
+                            <Button variant="primary" type="button" size="lg" onClick={(event) => checkLogin(event, email, password)}>
                                 Login
                             </Button>
                         </div>
-                        
                     </Form>
                 </Card>
             </div>

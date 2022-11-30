@@ -7,27 +7,28 @@ function NavBar() {
     let page = localStorage.getItem("page")
     const logout = () => {
         localStorage.removeItem("user");
-        localStorage.removeItem("page")
+        localStorage.removeItem("page");
         localStorage.removeItem("modifyEmployeeID");
         navigate('/');
     }
-    const redirectPage = () => {
-        if (page === 'modify') {
+    const redirectPage = (currentPage) => {
+        if (currentPage === 'disburse') {
             navigate('/disbursesalary')
         } else {
             navigate('/modify')
         }
     }
     return (
-        <Navbar>
-            <Navbar.Brand onClick={() => navigate('/')} style={{paddingLeft:'2%', cursor: 'pointer'}}>Academia ERP</Navbar.Brand>
+        <Navbar className="nav-style">
+            <Navbar.Brand className="navbar-brand" onClick={() => navigate('/')}>Academia ERP</Navbar.Brand>
             {user && 
             <>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
-                <Nav.Link className="nav-link-style" onClick={() => redirectPage()}>{page === 'modify' ? 'Disburse Salary' : 'Modify'}</Nav.Link>
-                <NavDropdown title={(user !== undefined && user !== null ? user.firstName : '')} >
-                    <NavDropdown.Item onClick={() => logout()}>
+                {(page === "modify" || page === "modifyform") && <Nav.Link className="nav-link-style" onClick={() => redirectPage("disburse")}>Disburse Salary</Nav.Link>}
+                {(page === "view" || page === "modifyform") && <Nav.Link className="nav-link-style" onClick={() => redirectPage("modify")}>Modify</Nav.Link>}
+                <NavDropdown title={(user !== undefined && user !== null ? user.firstName : '')}>
+                    <NavDropdown.Item onClick={() => logout()} className="nav-item-style">
                         Logout
                     </NavDropdown.Item>
                 </NavDropdown>

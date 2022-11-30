@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
-import { Alert, Card, ListGroup } from "react-bootstrap";
+import { Alert, Spinner, Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import NavBar from "../atoms/Navbar";
 import SalaryCard from "../atoms/SalaryCard";
 import './ModifyPage.css';
 function ModifyPage() {
+    const navigate = useNavigate();
     localStorage.setItem("page", "modify");
     const [employees, setEmployees] = useState([])
     const [error, setError] = useState(false);
+    const [spinner, setSpinner] = useState(true);
     let loggedInuser = localStorage.getItem("user")
+    useEffect(() => {
+        if (!loggedInuser) {
+            navigate('/')
+        }
+    })
     useEffect(() => {
         fetch("http://localhost:8080/modify/getall", {
             method: 'GET'
@@ -16,33 +24,40 @@ function ModifyPage() {
             if (data.status === 200) {
                 setEmployees(data.object)
             }
+            setSpinner(false);
         }).catch((err) => {
             setError(true)
+            setSpinner(false)
         })
     }, []);
-    const salaryCard = employees.filter((value, index) => value.employeeID !== JSON.parse(loggedInuser).employeeID).map((value, index) => {
+    const salaryCard = employees.filter((value) => value.employeeID !== JSON.parse(loggedInuser).employeeID).map((value) => {
         return <SalaryCard key={value.salaryID} user={value}/>        
     });
     if (salaryCard.length === 0) {
         localStorage.removeItem('modifyEmployeeID')
     }
     return (
-        <div className="container">
+        <>
             <NavBar />
-            <p className="header-text mt-5" style={{fontSize:'20px'}}>Modify Salary Details</p>
-            {(error || salaryCard.length === 0) && <Alert variant="danger">Unable to fetch data</Alert>}
-            {salaryCard.length > 0 && !error && <Card className="card-style">
-                <Card.Header className="card-header-style">
-                    <span style={{flex: "1 1 0px"}}>ID</span>
-                    <span style={{flex: "1 1 0px"}}>Name</span>
-                    <span style={{flex: "1 1 0px"}}>Salary</span>
-                    <span style={{flex: "0.6 1 0px"}}></span>
-                </Card.Header>
-                <ListGroup>
+            <div className="container">
+                <p className="header-text mt-5">Modify Salary Details</p>
+                {spinner && <div className="spinner-style">
+                    <Spinner animation="border" />
+                </div>}
+                {(error || salaryCard.length === 0) && !spinner && <Alert variant="danger">Unable to fetch data</Alert>}
+                {salaryCard.length > 0 && !error && <Table bordered hover>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Salary</th>
+                            <th></th>
+                        </tr>
+                    </thead>
                     {salaryCard.length > 0 && salaryCard}
-                </ListGroup>
-            </Card>}
-        </div>
+                </Table>}
+            </div>
+        </>
     )
 }
 

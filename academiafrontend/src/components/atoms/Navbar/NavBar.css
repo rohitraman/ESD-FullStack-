@@ -2,3 +2,23 @@
     padding-right: 2%;
     color : black;
 }
+.navbar-brand {
+    padding-left: 2%;
+    cursor: pointer
+}
+.nav-item-style {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.dropdown-menu {
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu.show {
+    margin-left: -165%;
+}
+.nav-style {
+    padding-right: 2%
+}

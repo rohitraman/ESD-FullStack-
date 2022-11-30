@@ -1,8 +1,12 @@
 .card-salary-style {
     padding:10px; 
     margin: 7px;
+    border: none;
 }
 .card-body {
     justify-content: space-between;
     align-items : center;
+}
+.spinner-style {
+    text-align: center;
 }
