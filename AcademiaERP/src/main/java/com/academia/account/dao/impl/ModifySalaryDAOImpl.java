@@ -78,7 +78,7 @@ public class ModifySalaryDAOImpl implements ModifySalaryDAO {
                     }
                 }
                 if (!isPresent)
-                    employeeSalaryResponseSet.add(new EmployeeSalaryResponse(es.getSalaryDisbursementID(), es.getEmployee().getEmployeeID(), es.getEmployee().getFirstName(), sal));
+                    employeeSalaryResponseSet.add(new EmployeeSalaryResponse(es.getSalaryDisbursementID(), es.getEmployee().getEmployeeID(), es.getEmployee().getFirstName() + ((es.getEmployee().getLastName() != null) && (es.getEmployee().getLastName().length() > 0) ? " " + es.getEmployee().getLastName() : "") , sal));
             }
             Collections.sort(employeeSalaryResponseSet, Comparator.comparingInt(employeeSalaryResponse -> employeeSalaryResponse.getEmployeeID()));
             return new Response(employeeSalaryResponseSet, 200);

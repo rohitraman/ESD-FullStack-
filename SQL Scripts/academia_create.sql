@@ -2,6 +2,12 @@ CREATE DATABASE AcademiaERPDB;
 
 USE AcademiaERPDB;
 
+CREATE TABLE department (
+    departmentID   int AUTO_INCREMENT,
+    departmentName varchar(255) not null,
+    PRIMARY KEY (departmentID)
+);
+
 CREATE TABLE employee (
   employeeID int NOT NULL AUTO_INCREMENT,
   emailID varchar(255) NOT NULL UNIQUE,
@@ -9,6 +15,7 @@ CREATE TABLE employee (
   lastName varchar(255),
   photoGraphPath varchar(255),
   title varchar(255),
+  departmentID int,
   PRIMARY KEY (employeeID)
 );
 

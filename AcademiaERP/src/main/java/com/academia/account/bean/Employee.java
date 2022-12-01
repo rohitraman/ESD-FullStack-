@@ -21,6 +21,18 @@ public class Employee {
 
     private String photoGraphPath;
 
+    @OneToOne
+    @JoinColumn(name = "departmentID", referencedColumnName = "departmentID")
+    private Department department;
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     public Integer getEmployeeID() {
         return employeeID;
     }

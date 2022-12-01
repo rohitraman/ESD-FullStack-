@@ -1,8 +1,10 @@
 package com.academia.account.dao.impl;
 
+import com.academia.account.bean.Department;
 import com.academia.account.bean.Employee;
 import com.academia.account.bean.Login;
 import com.academia.account.bean.Response;
+import com.academia.account.dao.DepartmentDAO;
 import com.academia.account.dao.LoginDAO;
 import com.academia.account.util.HibernateUtil;
 import jakarta.persistence.Query;
@@ -24,7 +26,15 @@ public class LoginDAOImpl implements LoginDAO {
             if (loginList.size() == 0) {
                 return new Response(null, 400);
             }
-            hql = "FROM Employee E WHERE E.emailID = '" + email + "'";
+            hql = "FROM Department D WHERE D.departmentName = :deptName";
+            query = session.createQuery(hql, Department.class);
+            query.setParameter("deptName", "Accounts");
+            List<Department> departmentList = query.getResultList();
+            if (departmentList.size() == 0) {
+                return new Response(null, 400);
+            }
+            Department department = departmentList.get(0);
+            hql = "FROM Employee E WHERE E.emailID = '" + email + "' and E.department.departmentID = " + department.getDepartmentID();
             query = session.createQuery(hql, Employee.class);
             List<Employee> employeeList = query.getResultList();
             if (employeeList.size() == 0) {
