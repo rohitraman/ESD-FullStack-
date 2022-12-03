@@ -15,13 +15,11 @@ function SalaryCard(props) {
     return (
         <tbody>
             <tr>
-                {/* <div className="d-flex card-body"> */}
-                    {page === 'view' && <td colSpan={1}>{<input type="checkbox" onClick={(event) => checkedEmployeeIDs(event, props.user.employeeID)}/> }</td>}
-                    <td colSpan={1}>{props.user.employeeID}</td>
-                    <td colSpan={1}>{props.user.name}</td>
-                    <td colSpan={1}>{props.user.salary}</td>
-                    {page === 'modify' && <td colSpan={1}>{<Button variant="success" onClick={() => modifyPage()}>Modify Salary Details</Button>}</td>}
-                {/* </div> */}
+                {page === 'view' && <td colSpan={1}>{<input type="checkbox" onClick={(event) => checkedEmployeeIDs(event, props.user.employeeID)}/> }</td>}
+                <td colSpan={1}>{props.user.employeeID}</td>
+                <td colSpan={1}>{props.user.name}</td>
+                <td colSpan={1}>{props.user.salary}</td>
+                {page === 'modify' && <td colSpan={1}>{<Button variant="success" onClick={() => modifyPage()}>Modify Salary Details</Button>}</td>}
             </tr>
         </tbody>
     )
